@@ -1,0 +1,14 @@
+- name: Configure Machine
+  hosts: localhost
+  become: true
+  vars_files:
+    - "../group_vars/all/packages.yml"
+    - "../group_vars/{{ machine_type }}/packages.yml"
+
+  roles:
+    - role: basics
+    - role: dotfiles
+    - role: packages
+    - { role: desktop_specific_role, when: machine_type == 'desktop' }
+    - { role: laptop_specific_role, when: machine_type == 'laptop' }
+
